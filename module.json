@@ -7,7 +7,7 @@
   "compatibleCoreVersion": "0.8.8",
   "author": "zDM",
   "esmodules": ["./zobsidian.js", "./markdown-it.min.js" ],
-  "url": "https://github.com/zdm3232/zobsidian"
+  "url": "https://github.com/zdm3232/zobsidian",
   "manifest": "https://raw.githubusercontent.com/zdm3232/zobsidian/master/module.json",
   "download": "https://github.com/zdm3232/zobsidian/archive/refs/tags/v0.1.zip"
 }
