@@ -1,6 +1,4 @@
 name: Zip Release
-  # You may pin to the exact commit or the version.
-  # uses: TheDoctor0/zip-release@4fb9e4ff72847dd3d1c111cf63834e353ed7cb3d
   uses: TheDoctor0/zip-release@0.6.0
   with:
     # Filename for archive
