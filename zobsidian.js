@@ -132,11 +132,10 @@ class importMarkdownForm extends FormApplication {
     this.renderChildren = [];
     let html = await this.markDown.render( data, { renderChildren: this.renderChildren, defaultRenderText: this.defaultRenderText } );
     db.content = html;
+    db.backlinks = [];
     db.children = [];
     for ( let child of this.renderChildren ) {
-      if ( myDBs[ child.name ] === undefined ) {
-	db.children.push( { name: child.name, title: child.title } );
-      }
+      db.children.push( { name: child.name, title: child.title } );
     }
     this.renderChildren = [];
 
@@ -152,7 +151,9 @@ class importMarkdownForm extends FormApplication {
 
     // process children
     for ( let child of db.children ) {
-      await this.readMarkdown( `${child.name}.md`, myDBs, level+1 );
+      if ( myDBs[ child.name ] === undefined ) {
+	await this.readMarkdown( `${child.name}.md`, myDBs, level+1 );
+      }
     }
 
     return link;
@@ -161,11 +162,25 @@ class importMarkdownForm extends FormApplication {
   // walk back through created journals and update links
   async updateLinks( myDBs )
   {
+    // build backlinks
     for ( let name of Object.keys( myDBs ) ) {
-      let journal = myDBs[name].journal;
+      let data = myDBs[name];
+      let db = data.db;
+      let journal = data.journal;
+      for ( let child of db.children ) {
+	let link = myDBs[ child.name ].db;
+	link.backlinks.push( { id: journal.id, name: journal.name } );
+      }
+    }
+
+    for ( let name of Object.keys( myDBs ) ) {
+      let data = myDBs[name];
+      let journal = data.journal;
       let html = $(`<div></div>`);
       html.html( journal.data.content );
 
+      let update = false;
+      let content = journal.data.content;
       let links = html.find( '[class^="zlink"]' );
       for ( let i = 0; i < links.length; i++ ) {
 	let value = links[i].innerHTML;
@@ -177,11 +192,24 @@ class importMarkdownForm extends FormApplication {
 	    links[i].innerHTML = value.replace( swap, `${link.id}` );
 	  }
 	}
+	update = true;
+      }
+      if ( update ) {
+	content = html.html();
       }
 
-      if ( links.length > 0 ) {
+      // add backlinks     
+      if ( data.db.backlinks.length > 0 ) {
+	content += "<h4>Backlinks</h4>";
+	for ( let backlink of data.db.backlinks ) {
+	  content += `<p>@JournalEntry[${backlink.id}]{${backlink.name}}</p>`;
+	}
+	update = true;
+      }
+
+      if ( update ) {
 	let db = {
-	  content: html.html()
+	  content: content
 	};
 	await journal.update( db );
       }
