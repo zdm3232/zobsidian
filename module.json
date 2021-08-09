@@ -3,11 +3,9 @@
   "title": "zobsidian",
   "description": "Obsidian Integration",
   "version": "0.0.1",
-  "author": "zdm",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.8",
   "author": "zDM",
   "esmodules": ["./zobsidian.js", "./markdown-it.min.js" ],
-  "url": "https://github.com/zdm3232/zobsidian",
-  "manifest": "https://github.com/zdm3232/zobsidian/blob/main/module.json"
+  "url": "https://github.com/zdm3232/zobsidian"
 }
