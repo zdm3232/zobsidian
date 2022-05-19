@@ -57,7 +57,8 @@ class importMarkdownForm extends FormApplication {
 	    title = name.match( /([^\/]+)$/ )[1];
 	  }
 	  env.renderChildren.push( { name: name, title: title } );
-	  return `<span class="zlink">@JournalEntry[zid=${name}]{${title}}</span>`;
+          let htmlLink = `<span class="zlink">@JournalEntry[zid=${name}]{${title}}</span>`;
+          html = html.replaceAll(link, htmlLink);
 	}
 	return html;
       }
