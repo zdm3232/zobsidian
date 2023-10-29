@@ -30,6 +30,36 @@ class importImage {
     }
   }
 
+  async uploadImage( file, imgpath ) {
+    const source = 'data';
+    const body = {};
+    await FilePicker.upload( source, imgpath, file, body );
+  }
+
+  async convert( form, file ) {
+    let imgpath = this.getImagePath( file );
+    if ( file.name.match( /\.webp$/ ) ) {
+      form.message( `upload webp image ${file.webkitRelativePath}` );
+      await this.uploadImage( file, imgpath );
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      canvas.getContext('2d').drawImage( image, 0, 0 );
+      canvas.toBlob( async(blob) => {
+	let filename = file.name.replace( /\.[^\.]+$/, ".webp" );
+	const myImage = new File( [blob], filename, { type: blob.type });
+	form.message( `upload webp image ${file.webkitRelativePath}` );
+	await this.uploadImage( myImage, imgpath );
+      }, 'image/webp');
+    };
+    image.src = URL.createObjectURL( file );
+  }
+
   async upload( form, files, enable ) {
     form.message( '<br><h3>Importing Images</h3><hr>' );
     if ( enable ) {
@@ -41,11 +71,12 @@ class importImage {
       let imgpath = this.getImagePath( file );
       const source = 'data';
       const body = {};
+
       if ( enable ) {
-	form.message( `import image ${file.webkitRelativePath}` );
-	await FilePicker.upload( source, imgpath, file, body );
+	await this.convert( form, file );
       }
-      images[ file.webkitRelativePath ] = `${imgpath}/${file.name}`;
+      let filename = file.name.replace( /\.[^\.]+$/, ".webp" );
+      images[ file.webkitRelativePath ] = `${imgpath}/${filename}`;
       cnt++;
     }
     form.message( `${cnt} images available` );
