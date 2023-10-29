@@ -1,13 +1,21 @@
 {
-  "name": "zobsidian",
+  "id": "zobsidian",
   "title": "zobsidian",
+  "version": "0.3.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "authors": [
+    {
+      "name": "zdm"
+    }
+  ],
   "description": "Obsidian Integration",
-  "version": "0.2",
-  "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "0.8.8",
-  "author": "zDM",
-  "esmodules": ["./zobsidian.js", "./markdown-it.min.js" ],
+  "esmodules": [
+    "./zobsidian.js"
+  ],
   "url": "https://github.com/zdm3232/zobsidian",
   "manifest": "https://raw.githubusercontent.com/zdm3232/zobsidian/master/module.json",
-  "download": "https://github.com/zdm3232/zobsidian/archive/refs/tags/v0.2.zip"
+  "download": "https://github.com/zdm3232/zobsidian/archive/refs/tags/v0.3.0.zip"
 }

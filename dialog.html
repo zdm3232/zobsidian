@@ -1,13 +1,15 @@
 <form>
   <div class="form-group">
-    <label for="mdfile">Root:</label>
-    <div class="form-fields">
-      {{filePicker target="mdfile"}}
-      <input type="text" name="mdfile" placeholder="path/file.md" value="{{object.mdfile}}"/>
-    </div>
+    <label>Vault Folder</label>
+    <input type="file" id="vaultFiles" webkitdirectory directory multiple required />
   </div>
   <div class="form-group">
-    <button type="submit" name="submit" value="submit">OK</button>
-    <button type="cancel" name="cancel" value="cancel">Cancel</button>
+    <label for="doimages">Import Images</label><br>
+    <input type="checkbox" id="doimages" name="doimages" value="doimages">
   </div>
+  <div class="form-group">
+    <button type="submit" name="submit" value="submit">Import</button>
+  </div>
+  <h3 style="font-variant: small-caps">Log:</h3>
+  <p><div name="zobslog" id="zobslog" style="overflow-y:auto; height: 600px; background: black; color: white; font-family: Arial"></div></p>
 </form>
